@@ -34,6 +34,8 @@ Channel selection follows the configuration's stored `SourceToken`. In the inspe
 
 The newer builds also contain a migration from media configuration schema 1.8 to 1.9. It resolves old profile references through their source tokens, updates the references, and removes surplus source configurations. This explains how the default 20-entry layout can become the five-entry layout during migration. A running-device upgrade was not tested.
 
+The [migration walkthrough](MIGRATION.md) describes the observed ordering, limited setting transfer, and error paths. Its before-and-after example is a prediction from the implementation, not a captured device sequence.
+
 ## Connecting logical sources to ports
 
 The firmware metadata identifies FA54 hardware ID 734 in all three images. The model's channel definitions are byte-identical. They map channels 1–4 to inputs 1–4, and channel 5 to a composite of those four inputs.

@@ -67,6 +67,8 @@ The newer builds contain a migration that updates existing profile references th
 
 That migration does not prevent a client from later reattaching a hardcoded configuration token and selecting a different source. Upgrade behavior and a client's subsequent profile setup are separate paths.
 
+[Migration details](MIGRATION.md) walks through the order of operations, the token `"2"` example before and after migration, shared configurations, and how to distinguish a migration problem from a later client change.
+
 The first release that changed the count has not been identified. Saved settings can differ from generated defaults. No upgrade or client repair was tested on a running FA54.
 
 [Comparison basis and validation limits](METHOD.md) describes how the findings were derived. [firmware.json](firmware.json) identifies the compared images by hash. This repository contains explanatory text and identifying metadata. Firmware is available from Axis under its own terms.
