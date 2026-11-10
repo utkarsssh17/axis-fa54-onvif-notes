@@ -1,0 +1,6 @@
+# Keep this repository limited to the write-up and identifying metadata.
+*
+!.gitignore
+!README.md
+!METHOD.md
+!firmware.json

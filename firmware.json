@@ -1,0 +1,38 @@
+{
+  "model": "AXIS FA54 Main Unit",
+  "analysis_date": "2026-11-10",
+  "method": "Offline examination of firmware implementation and default settings; no live-camera validation",
+  "support_page": "https://www.axis.com/products/axis-fa54-main-unit/support",
+  "images": [
+    {
+      "version": "10.12.363",
+      "url": "https://www.axis.com/ftp/pub/axis/software/MPQT/FA54/10_12_363/FA54_10_12_363.bin",
+      "sha256": "ba93d822cb1b9ac12a015cfea10304dd251993fb9b065f6c2c40ba335d4d5292",
+      "filename": "FA54_10_12_363.bin",
+      "bytes": 62452386,
+      "hardware_id": 734,
+      "default_configurations_per_source": 4,
+      "expected_default_configuration_count_with_quad_enabled": 20
+    },
+    {
+      "version": "11.11.238",
+      "url": "https://www.axis.com/ftp/pub/axis/software/MPQT/FA54/11_11_238/FA54_11_11_238.bin",
+      "sha256": "a8b59184218f51fe995de6774c35359a087e074307f986ab342014f6d5d32da7",
+      "filename": "FA54_11_11_238.bin",
+      "bytes": 68803797,
+      "hardware_id": 734,
+      "default_configurations_per_source": 1,
+      "expected_default_configuration_count_with_quad_enabled": 5
+    },
+    {
+      "version": "12.11.147",
+      "url": "https://www.axis.com/ftp/pub/axis/software/MPQT/FA54/12_11_147/FA54_12_11_147.bin",
+      "sha256": "594d75ea67d7f3ed04181895e9d899771c4ba47fd96233f7096079d2d92562fa",
+      "filename": "FA54_12_11_147.bin",
+      "bytes": 78563316,
+      "hardware_id": 734,
+      "default_configurations_per_source": 1,
+      "expected_default_configuration_count_with_quad_enabled": 5
+    }
+  ]
+}
