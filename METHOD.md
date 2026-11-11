@@ -1,6 +1,6 @@
 # Comparison basis and validation limits
 
-Analysis date: 2026-11-10.
+Initial comparison: 2026-11-10. Firmware 9.80.132 added: 2026-11-11.
 
 The question was whether FA54 firmware changes the mapping between ONVIF video source configuration tokens and sensor inputs. The intended use is client interoperability: selecting the same physical input across firmware versions without relying on a fixed configuration identifier.
 
@@ -10,6 +10,7 @@ This comparison used official FA54 firmware images from the [Axis support page](
 
 | Version | Image | SHA-256 |
 |---|---|---|
+| 9.80.132 | `FA54_9_80_132.bin` | `9eae8b68ed3c160aa92768855810aca744c6211ae9992f50125e17a3a89593b6` |
 | 10.12.363 | `FA54_10_12_363.bin` | `ba93d822cb1b9ac12a015cfea10304dd251993fb9b065f6c2c40ba335d4d5292` |
 | 11.11.238 | `FA54_11_11_238.bin` | `a8b59184218f51fe995de6774c35359a087e074307f986ab342014f6d5d32da7` |
 | 12.11.147 | `FA54_12_11_147.bin` | `594d75ea67d7f3ed04181895e9d899771c4ba47fd96233f7096079d2d92562fa` |
@@ -28,26 +29,28 @@ The comparison covered:
 - Whether a configuration can refer to a different source after creation.
 - How existing profile references are updated when the saved configuration format changes.
 
-For the shipped FA54 settings, 10.12.363 allocates four configurations to each of five logical sources. The other two builds allocate one per source. Configuration tokens and source tokens are separate identifiers, even when their values happen to match.
+For the shipped FA54 settings, 9.80.132 and 10.12.363 allocate four configurations to each of five logical sources. The 11.11.238 and 12.11.147 builds allocate one per source. Configuration tokens and source tokens are separate identifiers, even when their values happen to match.
 
-Channel selection follows the configuration's stored `SourceToken`. In the inspected FA54 topology, adding one to that source index gives the VAPIX camera number. This relationship does not apply to the configuration token itself. The ability to change a configuration's source was checked in 10.12.363 and 12.11.147.
+Channel selection follows the configuration's stored `SourceToken`. In the inspected FA54 topology, adding one to that source index gives the VAPIX camera number. This relationship does not apply to the configuration token itself. The ability to change a configuration's source was checked in 9.80.132, 10.12.363, and 12.11.147.
 
-The newer builds also contain a migration from media configuration schema 1.8 to 1.9. It resolves old profile references through their source tokens, updates the references, and removes surplus source configurations. This explains how the default 20-entry layout can become the five-entry layout during migration. A running-device upgrade was not tested.
+Both 9.80.132 and 10.12.363 use media configuration schema 1.8. The inspected 9.80.132 implementation does not include the source-configuration consolidation described here. The 11.11.238 and 12.11.147 builds contain the migration to schema 1.9: it resolves old profile references through their source tokens, updates the references, and removes surplus source configurations. This explains how the default 20-entry layout can become the five-entry layout during migration. No direct or intermediate upgrade path was tested on a running device.
 
 The [migration walkthrough](MIGRATION.md) describes the observed ordering, limited setting transfer, and error paths. Its before-and-after example is a prediction from the implementation, not a captured device sequence.
 
 ## Connecting logical sources to ports
 
-The firmware metadata identifies FA54 hardware ID 734 in all three images. The model's channel definitions are byte-identical. They map channels 1–4 to inputs 1–4, and channel 5 to a composite of those four inputs.
+The 10.12.363, 11.11.238, and 12.11.147 container metadata identifies FA54 hardware ID 734. Their model-specific channel definitions are byte-identical. The 9.80.132 product metadata identifies the FA54 and includes the corresponding channel definition numbered 734; a separate explicit hardware-ID field was not found in the inspected 9.80.132 metadata.
 
-The default video-service settings in 10.12.363 and 11.11.238 assign sources 0–3 to channels 1–4 and Quad View to channel 5. In 12.11.147, the settings define four source channels and one composite channel. The legacy parameter mapping connects `Image.I0` through `Image.I4` to channels 1 through 5.
+All four channel definitions map channels 1–4 to inputs 1–4 and channel 5 to a composite of those inputs. They are not identical across all four builds: 9.80.132 omits the explicit Quad View layout value `1,2:3,4` present in the other three. That difference does not change the input membership shown in those definitions.
+
+In 9.80.132, the image settings assign `Image.I0` through `Image.I3` to sources 0–3 and `Image.I4` to Quad View. The video-service defaults enable all five channels. In 10.12.363 and 11.11.238, the video-service settings explicitly assign sources 0–3 to channels 1–4 and Quad View to channel 5. In 12.11.147, the settings define four source channels and one composite channel; the legacy parameter mapping connects `Image.I0` through `Image.I4` to channels 1 through 5.
 
 These settings connect ONVIF source selection to the device's input topology. A configuration-object count does not establish how many sensors are connected.
 
 ## What still needs checking
 
 - No ONVIF response or upgrade was observed on a running FA54.
-- Only the three listed builds were inspected. The first release with the new count remains unknown.
+- Only the four listed builds were inspected. The first release with the new count remains unknown.
 - Quad View is checked for availability during configuration creation. The totals assume it is enabled at that point; this does not establish what happens when it is toggled later.
 - Saved settings can differ from the generated defaults.
 - The fixed-token example is inferred from the default mappings. It is not a recorded outage, and the suggested client procedure has not been tested against a running device.

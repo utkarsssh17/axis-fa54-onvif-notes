@@ -1,9 +1,18 @@
 {
   "model": "AXIS FA54 Main Unit",
-  "analysis_date": "2026-11-10",
+  "analysis_date": "2026-11-11",
   "method": "Offline examination of firmware implementation and default settings; no live-camera validation",
   "support_page": "https://www.axis.com/products/axis-fa54-main-unit/support",
   "images": [
+    {
+      "version": "9.80.132",
+      "url": "https://www.axis.com/ftp/pub/axis/software/MPQT/FA54/9_80_132/FA54_9_80_132.bin",
+      "sha256": "9eae8b68ed3c160aa92768855810aca744c6211ae9992f50125e17a3a89593b6",
+      "filename": "FA54_9_80_132.bin",
+      "bytes": 53034987,
+      "default_configurations_per_source": 4,
+      "expected_default_configuration_count_with_quad_enabled": 20
+    },
     {
       "version": "10.12.363",
       "url": "https://www.axis.com/ftp/pub/axis/software/MPQT/FA54/10_12_363/FA54_10_12_363.bin",

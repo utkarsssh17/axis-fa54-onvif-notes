@@ -6,7 +6,7 @@ This description comes from offline examination of the firmware implementation. 
 
 ## What triggers it
 
-The migration checks the saved media configuration format. The inspected 10.12.363 build uses schema 1.8; the two newer builds use 1.9. These are configuration-format versions, separate from firmware release numbers.
+The migration checks the saved media configuration format. The inspected 9.80.132 and 10.12.363 builds use schema 1.8; 11.11.238 and 12.11.147 use 1.9. These are configuration-format versions, separate from firmware release numbers. The inspected 9.80.132 implementation retains the 20-entry default layout and does not contain this consolidation step.
 
 Schema 1.8 enters the consolidation step directly. Earlier formats pass through preceding migration steps. A configuration already marked 1.9 skips this consolidation; a later client change to a profile does not cause it to run again. The first firmware release introducing this change remains unknown.
 
@@ -26,7 +26,7 @@ For a profile intended to stream sensor port 1, the expected sequence is:
 
 | Stage | Profile's configuration token | Configuration's `SourceToken` | Input |
 |---|---|---|---|
-| Before migration | `"2"` | `"0"` | Port 1 |
+| Before migration: 9.80.132 / 10.12.363 defaults | `"2"` | `"0"` | Port 1 |
 | After migration | `"0"` | `"0"` | Port 1 |
 | Client later attaches token `"2"` again | `"2"` | `"2"` | Port 3 |
 
@@ -45,5 +45,7 @@ Errors reading profile references or source-configuration fields, or removing a 
 On a test device, pause the provisioning client before upgrading. Record the firmware version, connected ports, Quad View state, profiles, configuration tokens, and source tokens. After upgrading, inspect the same profiles and verify their video before allowing the client to run again. Then run the client and compare the references and video a second time.
 
 That sequence separates the firmware's migration from later profile changes. A fresh configuration can also have five entries without ever passing through this migration, so the count alone cannot establish a device's history or explain a missing picture.
+
+The shared schema version supports the same migration explanation for the inspected 9.80.132 and 10.12.363 defaults. It does not establish that a direct upgrade between any two listed firmware builds is supported; no upgrade path was exercised here.
 
 See the [client selection procedure](README.md#selecting-the-intended-source-in-a-client) for selecting configurations by their returned source references.
